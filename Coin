@@ -1,0 +1,15 @@
+using UnityEngine;
+
+public class Coin : MonoBehaviour
+{
+    public int coinValue = 1; // Each coin gives 1 point
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player")) // Chicken collects the coin
+        {
+            CoinManager.instance.AddCoins(coinValue);
+            Destroy(gameObject); // Remove coin after collection
+        }
+    }
+}
