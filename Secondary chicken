@@ -1,0 +1,37 @@
+using UnityEngine;
+
+public class StrongerChicken : MonoBehaviour
+{
+    public int health = 250; // Increased health
+    public GameObject eggPrefab;
+    public Transform firePoint; // Position where the egg is spawned
+    public float eggSpeed = 12f; // Slightly faster eggs
+    public float fireRate = 0.8f; // Faster shooting speed
+
+    private float nextFireTime = 0f;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= nextFireTime)
+        {
+            ShootEgg();
+            nextFireTime = Time.time + fireRate;
+        }
+    }
+
+    void ShootEgg()
+    {
+        GameObject egg = Instantiate(eggPrefab, firePoint.position, Quaternion.identity);
+        Rigidbody2D rb = egg.GetComponent<Rigidbody2D>();
+        rb.velocity = transform.right * eggSpeed; // Moves egg forward
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject); // Chicken dies
+        }
+    }
+}
