@@ -1,0 +1,45 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class SafeZoneWarning : MonoBehaviour
+{
+    public Image redScreenOverlay;
+    public float damagePerSecond = 5f;
+    private bool isOutsideZone = false;
+    private PlayerHealth playerHealth;
+
+    void Start()
+    {
+        playerHealth = GetComponent<PlayerHealth>();
+        redScreenOverlay.enabled = false;
+    }
+
+    void Update()
+    {
+        if (isOutsideZone)
+        {
+            playerHealth.TakeDamage(damagePerSecond * Time.deltaTime);
+            redScreenOverlay.enabled = true;
+        }
+        else
+        {
+            redScreenOverlay.enabled = false;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("SafeZone"))
+        {
+            isOutsideZone = false;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("SafeZone"))
+        {
+            isOutsideZone = true;
+        }
+    }
+}
