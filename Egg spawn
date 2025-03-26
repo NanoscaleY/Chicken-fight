@@ -1,0 +1,16 @@
+using UnityEngine;
+
+public class EggSpawner : MonoBehaviour
+{
+    public GameObject[] eggPrefabs;
+    public Transform[] spawnPoints;
+
+    void Start()
+    {
+        foreach (Transform spawn in spawnPoints)
+        {
+            int randomIndex = Random.Range(0, eggPrefabs.Length);
+            Instantiate(eggPrefabs[randomIndex], spawn.position, Quaternion.identity);
+        }
+    }
+}
