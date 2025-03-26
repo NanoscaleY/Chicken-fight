@@ -1,0 +1,20 @@
+using UnityEngine;
+
+public class Egg : MonoBehaviour
+{
+    public int damage = 10;
+
+    void Start()
+    {
+        Destroy(gameObject, 3f); // Destroy egg after 3 seconds
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy")) // If egg hits an enemy
+        {
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
