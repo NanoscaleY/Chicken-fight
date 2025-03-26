@@ -1,0 +1,16 @@
+public GameObject coinPrefab; // Assign a coin prefab in the Inspector
+
+public void TakeDamage(int damage)
+{
+    health -= damage;
+    if (health <= 0)
+    {
+        DropCoin();
+        Destroy(gameObject);
+    }
+}
+
+void DropCoin()
+{
+    Instantiate(coinPrefab, transform.position, Quaternion.identity);
+}
