@@ -1,0 +1,23 @@
+using UnityEngine;
+using System.Collections;
+
+public class SafeZone : MonoBehaviour
+{
+    public float shrinkRate = 1f;
+    public float minSize = 10f;
+    public float shrinkInterval = 10f; // Time between shrinks
+
+    void Start()
+    {
+        StartCoroutine(ShrinkZone());
+    }
+
+    IEnumerator ShrinkZone()
+    {
+        while (transform.localScale.x > minSize)
+        {
+            yield return new WaitForSeconds(shrinkInterval);
+            transform.localScale -= new Vector3(shrinkRate, 0, shrinkRate);
+        }
+    }
+}
