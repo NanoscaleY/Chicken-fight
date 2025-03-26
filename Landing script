@@ -1,0 +1,19 @@
+using UnityEngine;
+using UnityEngine.Networking;
+
+public class PlayerDrop : NetworkBehaviour
+{
+    public float dropSpeed = 20f;
+    private bool isDropping = true;
+
+    void Update()
+    {
+        if (!isLocalPlayer || !isDropping) return;
+
+        if (Input.GetKeyDown(KeyCode.Space)) // Press Space to drop
+        {
+            isDropping = false;
+            GetComponent<Rigidbody>().useGravity = true;
+        }
+    }
+}
