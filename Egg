@@ -1,0 +1,24 @@
+using UnityEngine;
+
+public class StrongerEgg : MonoBehaviour
+{
+    public int damage = 15; // Increased damage
+
+    void Start()
+    {
+        Destroy(gameObject, 3f); // Destroy egg after 3 seconds
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy")) // If egg hits an enemy
+        {
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+            Destroy(gameObject); // Egg disappears on impact
+        }
+    }
+}
