@@ -90,3 +90,30 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit
+using UnityEngine;
+
+public class PlayerAttributes : MonoBehaviour
+{
+    public float baseSpeed = 5f;
+    public int baseHealth = 100;
+    private float currentSpeed;
+    private int currentHealth;
+
+    void Start()
+    {
+        currentSpeed = baseSpeed;
+        currentHealth = baseHealth;
+    }
+
+    public void IncreaseSpeed(float amount)
+    {
+        currentSpeed += amount;
+        // Update player movement speed accordingly
+    }
+
+    public void IncreaseHealth(int amount)
+    {
+        currentHealth += amount;
+        // Ensure health doesn't exceed maximum allowed value
+    }
+}
