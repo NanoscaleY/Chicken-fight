@@ -1,0 +1,62 @@
+using UnityEngine;
+
+public class Parachute : MonoBehaviour
+{
+    public GameObject parachuteModel;
+    public float fallSpeed = 50f;
+    public float glideSpeed = 10f;
+    public float turnSpeed = 2f;
+    private bool parachuteDeployed = false;
+    private Rigidbody rb;
+    private bool landedHard = false;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.velocity = Vector3.down * fallSpeed; // Start falling
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !parachuteDeployed)
+        {
+            DeployParachute();
+        }
+
+        if (parachuteDeployed)
+        {
+            float horizontal = Input.GetAxis("Horizontal") * turnSpeed;
+            transform.Rotate(0, horizontal, 0); // Steer left/right
+        }
+    }
+
+    void DeployParachute()
+    {
+        parachuteDeployed = true;
+        parachuteModel.SetActive(true);
+        rb.velocity = Vector3.down * glideSpeed; // Slow down fall
+        StartCoroutine(SmoothDeploy());
+    }
+
+    IEnumerator SmoothDeploy()
+    {
+        float scale = 0.1f;
+        while (scale < 1)
+        {
+            scale += Time.deltaTime * 2;
+            parachuteModel.transform.localScale = new Vector3(scale, scale, scale);
+            yield return null;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (!parachuteDeployed && !landedHard) // If no parachute, take damage
+        {
+            landedHard = true;
+            GetComponent<PlayerHealth>().TakeDamage(5);
+        }
+
+        parachuteModel.SetActive(false); // Hide parachute on landing
+    }
+}
