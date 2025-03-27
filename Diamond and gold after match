@@ -1,0 +1,62 @@
+using UnityEngine;
+
+public class CurrencyManager : MonoBehaviour
+{
+    public static CurrencyManager instance;
+    public int gold = 0;
+    public int diamonds = 0;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            LoadCurrency();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void EarnRewards()
+    {
+        gold += 1; // Earn 1 Gold per round
+        diamonds += 5; // Earn 5 Diamonds per round
+        SaveCurrency();
+    }
+
+    public bool SpendGold(int amount)
+    {
+        if (gold >= amount)
+        {
+            gold -= amount;
+            SaveCurrency();
+            return true;
+        }
+        return false;
+    }
+
+    public bool SpendDiamonds(int amount)
+    {
+        if (diamonds >= amount)
+        {
+            diamonds -= amount;
+            SaveCurrency();
+            return true;
+        }
+        return false;
+    }
+
+    void SaveCurrency()
+    {
+        PlayerPrefs.SetInt("Gold", gold);
+        PlayerPrefs.SetInt("Diamonds", diamonds);
+    }
+
+    void LoadCurrency()
+    {
+        gold = PlayerPrefs.GetInt("Gold", 0);
+        diamonds = PlayerPrefs.GetInt("Diamonds", 0);
+    }
+}
