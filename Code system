@@ -1,0 +1,50 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class VIPCodeManager : MonoBehaviour
+{
+    public InputField codeInputField;
+    public Text feedbackText;
+    
+    void Start()
+    {
+        feedbackText.text = ""; // Clear feedback on start
+    }
+
+    public void CheckVIPCode()
+    {
+        string enteredCode = codeInputField.text.Trim().ToUpper(); // Convert to uppercase
+
+        if (enteredCode == "VPIIP")
+        {
+            CurrencyManager.instance.AddGold(500);
+            UnlockVIPBox();
+            feedbackText.text = "✅ Code Accepted! 500 Gold + VIP Box Unlocked!";
+            feedbackText.color = Color.green;
+        }
+        else if (enteredCode == "SRABKB213")
+        {
+            CurrencyManager.instance.AddDiamonds(1000);
+            UnlockSchoolChickenSkin();
+            feedbackText.text = "✅ Code Accepted! 1000 Diamonds + School Chicken Skin Unlocked!";
+            feedbackText.color = Color.green;
+        }
+        else
+        {
+            feedbackText.text = "❌ Invalid Code! Try Again.";
+            feedbackText.color = Color.red;
+        }
+    }
+
+    void UnlockVIPBox()
+    {
+        // Unlocks the "Ronaldo" emote (knee slide)
+        PlayerPrefs.SetInt("VIPBox", 1); // 1 means unlocked
+    }
+
+    void UnlockSchoolChickenSkin()
+    {
+        // Unlocks the chicken skin with school uniform
+        PlayerPrefs.SetInt("SchoolChickenSkin", 1); // 1 means unlocked
+    }
+}
