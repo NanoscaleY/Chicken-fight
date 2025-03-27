@@ -1,0 +1,17 @@
+using UnityEngine;
+
+public class KetupatItem : MonoBehaviour
+{
+    private const float speedIncrease = 10f;
+    private const int healthIncrease = 100;
+
+    void OnTriggerEnter(Collider other)
+    {
+        PlayerAttributes playerAttributes = other.GetComponent<PlayerAttributes>();
+        if (playerAttributes != null && playerAttributes.CanConsumeKetupat())
+        {
+            playerAttributes.ConsumeKetupat(speedIncrease, healthIncrease);
+            Destroy(gameObject); // Remove the Ketupat item from the scene
+        }
+    }
+}
