@@ -35,3 +35,58 @@ public class StrongerChicken : MonoBehaviour
         }
     }
 }
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float moveSpeed = 5f; // Movement speed
+    public float rotationSpeed = 10f; // Rotation speed
+
+    public Joystick joystick; // Assign in Unity for mobile
+    private bool isMobile; // Detects if playing on mobile
+
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        isMobile = Application.isMobilePlatform; // Check if mobile
+    }
+
+    void Update()
+    {
+        if (isMobile)
+        {
+            MoveWithJoystick();
+        }
+        else
+        {
+            MoveWithKeyboard();
+            RotateWithMouse();
+        }
+    }
+
+    void MoveWithJoystick()
+    {
+        Vector3 moveDirection = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
+        rb.velocity = moveDirection * moveSpeed;
+        
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    void MoveWithKeyboard()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
+        Vector3 moveDirection = new Vector3(moveX, 0, moveZ).normalized;
+        rb.velocity = moveDirection * moveSpeed;
+    }
+
+    void RotateWithMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit
